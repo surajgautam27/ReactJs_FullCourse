@@ -24,9 +24,15 @@ amount:'45.45',
 date:new Date(2020,7,14),
 }
   ]
+  const addExpenseHandler=(expense)=>{
+    console.log("in app")
+    console.log(expense)
+
+  }
+
   return (
     <div>
-      <NewExpense/>
+      <NewExpense onAddExpense={addExpenseHandler}/>
    <Expenses items={expenses}/>
 
     </div>
