@@ -1,48 +1,47 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 const SimpleInput = (props) => {
-  const nameInputRef = useRef();
-  const [enteredName, setEnteredName] = useState("");
-const [enteredNameIsValid,setEnterNameIsValid]=useState(true)
-  const [enteredNameTouched,setEnteredNameTouched]=useState(false)
-useEffect(()=>{
-  if(enteredNameIsValid)
-  {
-    console.log('Entered name is valid')
 
-  }
-},[enteredNameIsValid])
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredNameTouched,setEnteredNameTouched]=useState(false)
+
+const enteredNameIsValid = enteredName.trim() !=='';
+const nameInputIsInvalid =!enteredNameIsValid && enteredNameTouched
 
 const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+   
   };
+
+  const nameInputBlurHandler = event =>{
+setEnteredNameTouched(true)
+
+  }
 
   const formSubmissionHandler = (event) => {
 
     event.preventDefault();
-    setEnteredNameTouched(true)
-    if(enteredName.trim()===''){
-        setEnterNameIsValid(false)
-             return
+    
+    if(!enteredNameIsValid)
+    {
+      return
     }
-    setEnterNameIsValid(true)
-    console.log(enteredName);
-
-    const enterdValue = nameInputRef.current.value;
-    console.log(enterdValue);
-    // nameInputRef.current.value=""
+ 
+    console.log(enteredName)
     setEnteredName("");
+    setEnteredNameTouched(false)
   };
-  const nameInputIsInvalid =!enteredNameIsValid && enteredNameTouched
+  
 const nameInputClasses = nameInputIsInvalid ? 'form-control invalid':'form-control';
   return (
     <form onSubmit={formSubmissionHandler}>
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameInputRef}
+         
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid &&<p className="error-text">Name must not be empty</p>}
